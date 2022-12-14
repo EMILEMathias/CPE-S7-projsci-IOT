@@ -61,8 +61,7 @@ if __name__ == '__main__':
     try:
         while ser.isOpen() :
             if (ser.inWaiting() > 0): # if incoming bytes are waiting
-                data_str = ser.read(428)
-                ser.flush()
+                data_str = str(ser.read_until(b'\x24')).replace('b\'','').replace('\'','')
                 os.system('clear')
                 print(data_str)
     except (KeyboardInterrupt, SystemExit):

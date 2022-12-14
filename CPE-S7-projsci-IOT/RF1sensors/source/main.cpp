@@ -27,7 +27,7 @@ int toUwuStringFormat( char* strInput,int uwuStatus){
         if( uwuMsg[i] == '\0') uwuMsg[i] = ' ';
 
     uwuMsg[245] = (char)uwuID;
-    uwuMsg[246] = uwuStatus ? '1' : '0';
+    uwuMsg[246] = uwuStatus ? '*' : '$';
     uwuMsg[247] = '\0';
 
     strcpy(strInput,uwuMsg);
@@ -42,9 +42,14 @@ int main()
     //on divise les donnees
     for(int i = 0; i < maxUwuBodySize ; i++ )
         uwuSplitData[0][i] = mimicData[i];
+    int j = 0;
     for(int i = 0 ; i + maxUwuBodySize < maxSizeInputData ; i++ )
-        uwuSplitData[1][i] = mimicData[i + maxUwuBodySize];
+        {
+            uwuSplitData[1][i] = mimicData[i + maxUwuBodySize];
+            j = i;
+        }
 
+    uBit.display.scroll(j);
     toUwuStringFormat(uwuSplitData[0],1);
     toUwuStringFormat(uwuSplitData[1],0);
 
@@ -55,7 +60,8 @@ int main()
     while(1)
     {
         uBit.radio.datagram.send(uwuSplitData[0]);
+        uBit.sleep(1000);
         uBit.radio.datagram.send(uwuSplitData[1]);
-        uBit.sleep(6000);
+        uBit.sleep(4000);
     }
 }
