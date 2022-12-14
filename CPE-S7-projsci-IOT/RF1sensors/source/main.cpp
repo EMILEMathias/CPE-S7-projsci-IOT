@@ -44,9 +44,12 @@ int main()
         uwuSplitData[0][i] = mimicData[i];
     for(int i = 0 ; i + maxUwuBodySize < maxSizeInputData ; i++ )
         uwuSplitData[1][i] = mimicData[i + maxUwuBodySize];
-
+    uBit.display.scroll(uwuSplitData[1][0]);
     toUwuStringFormat(uwuSplitData[0],1);
+    uBit.display.scroll(uwuSplitData[1][0]);
     toUwuStringFormat(uwuSplitData[1],0);
+    uBit.display.scroll(uwuSplitData[1][0]);
+    uBit.display.scroll(uwuSplitData[1][3]);
 
     uBit.init();
     uBit.radio.setGroup(7);
@@ -56,6 +59,6 @@ int main()
     {
         uBit.radio.datagram.send(uwuSplitData[0]);
         uBit.radio.datagram.send(uwuSplitData[1]);
-        uBit.sleep(10000);
+        uBit.sleep(6000);
     }
 }

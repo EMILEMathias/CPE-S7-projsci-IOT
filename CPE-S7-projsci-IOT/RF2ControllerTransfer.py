@@ -22,8 +22,6 @@ def findSerialPort():
         ports = ''
    for port in ports:
         try:
-            print(port)
-            serial_test = serial.Serial(port)
             SerialPort = port
         except (OSError, serial.SerialException):
             pass
@@ -62,9 +60,8 @@ if __name__ == '__main__':
     try:
         while ser.isOpen() :
             if (ser.inWaiting() > 0): # if incoming bytes are waiting
-                data_str = str(ser.read(ser.inWaiting())).replace('b\'','').replace('\'','')
-                print(data_str)
-
+                data_str = ser.readall()
+                ser.flush()
     except (KeyboardInterrupt, SystemExit):
         ser.close()
         exit()
