@@ -6,6 +6,7 @@ import serial
 import json
 import glob
 from datetime import datetime
+import os
 
 # send serial message
 SERIALPORT = "COM5"
@@ -60,8 +61,10 @@ if __name__ == '__main__':
     try:
         while ser.isOpen() :
             if (ser.inWaiting() > 0): # if incoming bytes are waiting
-                data_str = ser.readall()
+                data_str = ser.read(428)
                 ser.flush()
+                os.system('clear')
+                print(data_str)
     except (KeyboardInterrupt, SystemExit):
         ser.close()
         exit()
