@@ -9,7 +9,7 @@ from datetime import datetime
 import os
 
 # send serial message
-SERIALPORT = "COM5"
+SERIALPORT = ""
 BAUDRATE = 115200
 ser = serial.Serial()
 
@@ -23,7 +23,8 @@ def findSerialPort():
         ports = ''
    for port in ports:
         try:
-            SerialPort = port
+            # SerialPort = port
+            SerialPort = "/dev/ttyACM1"
         except (OSError, serial.SerialException):
             pass
    return SerialPort
@@ -63,7 +64,7 @@ if __name__ == '__main__':
             if (ser.inWaiting() > 0): # if incoming bytes are waiting
                 data_str = str(ser.read_until(b'\x24')).replace('b\'','').replace('\'','')
                 os.system('clear')
-                print("Received data :\n"+data_str)
+                print("Serial Port : "+ ser.port + "\nReceived data :\n" + data_str)
     except (KeyboardInterrupt, SystemExit):
         ser.close()
         exit()

@@ -3,6 +3,7 @@
 #include <bitset>
 
 MicroBit uBit;
+MicroBitSerial serial(USBTX, USBRX); 
 int uwuID = 125;
 int maxSizeInputData = 421;
 int maxUwuBodySize = 242;
@@ -32,7 +33,15 @@ int toUwuStringFormat( char* strInput,int uwuStatus){
 
     strcpy(strInput,uwuMsg);
     return 1;
-} 
+}
+
+void onSerial(MicroBitEvent e)
+{
+    uBit.radio.datagram.send(uwuSplitData[0]);
+    uBit.sleep(2000);
+    uBit.radio.datagram.send(uwuSplitData[1]);
+    uBit.sleep(2000);
+}
 
 int main()
 {
@@ -42,26 +51,23 @@ int main()
     //on divise les donnees
     for(int i = 0; i < maxUwuBodySize ; i++ )
         uwuSplitData[0][i] = mimicData[i];
-    int j = 0;
     for(int i = 0 ; i + maxUwuBodySize < maxSizeInputData ; i++ )
         {
             uwuSplitData[1][i] = mimicData[i + maxUwuBodySize];
-            j = i;
         }
 
-    uBit.display.scroll(j);
     toUwuStringFormat(uwuSplitData[0],1);
     toUwuStringFormat(uwuSplitData[1],0);
 
     uBit.init();
+    uBit.messageBus.listen(MICROBIT_ID_SERIAL, MICROBIT_SERIAL_EVT_DELIM_MATCH, onSerial);
+    serial.eventOn( ")", ASYNC);
+    serial.read(1,ASYNC);
+
     uBit.radio.setGroup(7);
     uBit.radio.enable();
 
-    while(1)
-    {
-        uBit.radio.datagram.send(uwuSplitData[0]);
+    while(1){
         uBit.sleep(1000);
-        uBit.radio.datagram.send(uwuSplitData[1]);
-        uBit.sleep(4000);
     }
 }

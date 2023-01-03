@@ -14,14 +14,12 @@ for i in range(Nscales):
 
 # send serial message 
 # Don't forget to establish the right serial port ******** ATTENTION
-# SERIALPORT = "/dev/ttyUSB0"
-SERIALPORT = "/dev/tty.usbserial-DA00G4XZ"
+SERIALPORT = "/dev/ttyACM0"
 BAUDRATE = 115200
 ser = serial.Serial()
 
 def initUART():     
         if serialButton['text'] == "Open Serial":   
-                # ser = serial.Serial(SERIALPORT, BAUDRATE)
                 ser.port=SERIALPORT
                 ser.baudrate=BAUDRATE
                 ser.bytesize = serial.EIGHTBITS #number of bits per bytes
@@ -51,7 +49,7 @@ def initUART():
 
 def sendUARTMessage(msg):
     ser.write(msg.encode())
-    # print("Message <" + msg + "> sent to micro-controller." )
+    print("Message <" + msg + "> sent to micro-controller." )
 
 
 def read_scales():
@@ -69,7 +67,5 @@ b=Button(master,text="Send Values",highlightcolor="blue",command=read_scales, st
 serialButton=Button(master,text="Open Serial",highlightcolor="blue",command=initUART) # button to read values
 b.grid(row=6,column=7,columnspan = 3)
 serialButton.grid(row=6, column=0, columnspan = 3)
-
-# initUART()
 
 mainloop()
