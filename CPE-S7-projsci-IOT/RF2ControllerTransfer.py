@@ -23,8 +23,8 @@ def findSerialPort():
         ports = ''
    for port in ports:
         try:
-            # SerialPort = port
-            SerialPort = "/dev/ttyACM1"
+            SerialPort = "/dev/ttyACM0"
+            # SerialPort = port 
         except (OSError, serial.SerialException):
             pass
    return SerialPort
@@ -50,8 +50,8 @@ def initUART():
     try:
         ser.open()
         print("Serial Monitor is started on port {}".format(SERIALPORT))
-    except serial.SerialException:
-        print("No Serial Port is available")
+    except serial.SerialException as aled:
+        print("No Serial Port is available {}".format(aled))
         exit()
 
 
