@@ -60,6 +60,7 @@ def read_scales():
         if (scales[i].get()>0) :
                 print("Fire x=%d, y=%d has value %d" %( row, column, scales[i].get()) )
         sendUARTMessage("(%d,%d,%d)" %(row, column, scales[i].get()))
+    sendUARTMessage("$")
     
     b['state'] = 'normal'
 
