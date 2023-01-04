@@ -8,11 +8,11 @@ import glob
 from datetime import datetime
 import os
 
-# send serial message
 SERIALPORT = ""
 BAUDRATE = 115200
 ser = serial.Serial()
 
+# search and assign port 
 def findSerialPort():
    SerialPort = ""
    if sys.platform.startswith('win'):
@@ -62,6 +62,7 @@ if __name__ == '__main__':
     try:
         while ser.isOpen() :
             if (ser.inWaiting() > 0): # if incoming bytes are waiting
+                # wait for a $ in serial bus 
                 data_str = str(ser.read_until(b'\x24')).replace('b\'','').replace('\'','')
                 os.system('clear')
                 print("Serial Port : "+ ser.port + "\nReceived data :\n" + data_str)

@@ -2,6 +2,7 @@
 
 MicroBit uBit;
 
+//receptionne les données RF et envoie en serial
 void onData(MicroBitEvent e)
 {
     PacketBuffer radioData = uBit.radio.datagram.recv();
@@ -10,6 +11,7 @@ void onData(MicroBitEvent e)
     uBit.serial.send(radioData);
 }
 
+//setup RF and serial
 int main()
 {
     uBit.init();
