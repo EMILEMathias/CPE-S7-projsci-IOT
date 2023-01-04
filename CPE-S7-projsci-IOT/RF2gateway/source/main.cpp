@@ -5,8 +5,8 @@ MicroBit uBit;
 void onData(MicroBitEvent e)
 {
     PacketBuffer radioData = uBit.radio.datagram.recv();
-    uBit.display.scroll("B2");
-    uBit.display.scroll(ManagedString(radioData).substring(240,248));
+    uBit.display.scroll("B2",75);
+    // uBit.display.scroll(ManagedString(radioData),75);
     uBit.serial.send(radioData);
 }
 
