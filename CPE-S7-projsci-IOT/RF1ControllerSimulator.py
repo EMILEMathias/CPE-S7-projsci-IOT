@@ -14,7 +14,7 @@ for i in range(Nscales):
 
 # send serial message 
 # Don't forget to establish the right serial port ******** ATTENTION
-SERIALPORT = "/dev/ttyACM0"
+SERIALPORT = "/dev/ttyACM1"
 BAUDRATE = 115200
 ser = serial.Serial()
 
