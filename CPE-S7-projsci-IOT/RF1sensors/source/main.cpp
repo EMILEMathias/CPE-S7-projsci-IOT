@@ -62,6 +62,7 @@ ManagedString toUwuStringFormat( ManagedString strInput,int uwuStatus){
 }
 
 // récupère les données du bus, la divise en deux et la diffuse en RF
+// récupère les données du bus, la divise en deux et la diffuse en RF
 void onSerial(MicroBitEvent e)
 {
     uBit.display.scroll("A1",75);
@@ -81,8 +82,11 @@ void onSerial(MicroBitEvent e)
 int main()
 {
     //setup RF and serial
+    //setup RF and serial
     uBit.init();
     uBit.messageBus.listen(MICROBIT_ID_SERIAL, MICROBIT_SERIAL_EVT_DELIM_MATCH, onSerial);
+    serial.eventOn("$");
+    serial.read(0);
     serial.eventOn("$");
     serial.read(0);
 

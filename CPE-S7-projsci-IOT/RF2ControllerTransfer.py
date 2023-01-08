@@ -23,7 +23,7 @@ def findSerialPort():
         ports = ''
    for port in ports:
         try:
-            SerialPort = "/dev/ttyACM0"
+            SerialPort = "/dev/ttyACM1"
             # SerialPort = port 
         except (OSError, serial.SerialException):
             pass
