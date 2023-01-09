@@ -5,6 +5,11 @@ make clean/build/install
 python3 -m venv ~/yotta
 source ~/yotta/bin/activate
 
+
+sudo mount -t drvfs f: /media/mathias/MICROBIT && sudo mount -t drvfs e: /media/mathias/MICROBIT1 && make -C ./RF1sensors/ build && make -C ./RF1sensors/ install && make -C ./RF2gateway/ build && make -C ./RF2gateway/ install && sudo umount /media/mathias/MICROBIT ; sudo umount /media/mathias/MICROBIT1
+usbipd unbind -b 2-2;usbipd unbind -b 2-1
+usbipd wsl attach -b 2-2;usbipd wsl attach -b 2-1
+
 serial monitor
 
 one time pad encryption

@@ -44,10 +44,8 @@ void onData(MicroBitEvent e)
 {
     PacketBuffer radioData = uBit.radio.datagram.recv();
     uBit.display.scroll("B2",75);
-    uBit.serial.send(decrypt(ManagedString(radioData),key));
-    uBit.serial.send("$");
+    uBit.serial.send(decrypt(ManagedString(radioData).substring(0,ManagedString(radioData).length()-1),key) + ManagedString(radioData).charAt(ManagedString(radioData).length()-1));
     // uBit.serial.send(ManagedString(radioData));
-
 }
 
 //setup RF and serial
