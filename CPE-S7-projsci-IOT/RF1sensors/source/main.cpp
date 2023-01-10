@@ -48,8 +48,6 @@ ManagedString toUwuStringFormat( ManagedString strInput,int uwuStatus){
 
     ManagedString uwuEncryptedMsg(encrypt(uwuName+uwuBody+uwuPID, key));
     ManagedString uwuPStatus(uwuStatus ? '*' : '$');
-
-    // uBit.display.scroll(ManagedString(uwuName+uwuBody+uwuPID+uwuPStatus+uwuEndMsg),75);
     return ManagedString(uwuEncryptedMsg+uwuPStatus);
 }
 
@@ -57,16 +55,16 @@ ManagedString toUwuStringFormat( ManagedString strInput,int uwuStatus){
 void onSerial(MicroBitEvent e)
 {
     uBit.display.scroll("A1",75);
-    // ManagedString serialData = serial.readUntil('$');
-    ManagedString serialData = serial.read(20);
-    ManagedString mockupData = ManagedString("(0,0,2)(1,0,0)(2,0,0)(3,0,0)(4,0,0)(5,0,0)(6,0,0)(7,0,0)(8,0,0)(9,0,0)(0,1,0)(1,1,0)(2,1,0)(3,1,5)(4,1,0)(5,1,0)(6,1,0)(7,1,0)(8,1,0)(9,1,0)(0,2,0)(1,2,0)(2,2,0)(3,2,0)(4,2,3)(5,2,0)(6,2,0)(7,2,0)(8,2,0)(9,2,0)(0,3,0)(1,3,0)(2,3,0)(3,3,0)(4,3,0)(5,3,3)(6,3,0)(7,3,0)(8,3,0)(9,3,0)(0,4,0)(1,4,0)");
+    ManagedString serialData = serial.readUntil('$');
+    // ManagedString serialData = serial.read(20);
+    // ManagedString mockupData = ManagedString("(0,0,2)(1,0,0)(2,0,0)(3,0,0)(4,0,0)(5,0,0)(6,0,0)(7,0,0)(8,0,0)(9,0,0)(0,1,0)(1,1,0)(2,1,0)(3,1,5)(4,1,0)(5,1,0)(6,1,0)(7,1,0)(8,1,0)(9,1,0)(0,2,0)(1,2,0)(2,2,0)(3,2,0)(4,2,3)(5,2,0)(6,2,0)(7,2,0)(8,2,0)(9,2,0)(0,3,0)(1,3,0)(2,3,0)(3,3,0)(4,3,0)(5,3,3)(6,3,0)(7,3,0)(8,3,0)(9,3,0)(0,4,0)(1,4,0)(2,4,4)(3,4,0)(4,4,0)(5,4,0)(6,4,0)(7,4,0)(8,4,0)(9,4,0)(0,5,0)(1,5,0)(2,5,0)(3,5,0)(4,5,0)(5,5,4)(6,5,0)(7,5,0)(8,5,0)(9,5,0)(0,0,2)(1,0,0)(2,0,0)(3,0,0)(1,0,0)(2,0,0)(3,0,0)(1,0,0)(1,0,0)(");
     
     // boucle à travers les données
-    for(int i = 0; i*maxMsgBodyLen <= mockupData.length(); i++ ){
-        if((i+1)*maxMsgBodyLen > mockupData.length())
-            uBit.radio.datagram.send(toUwuStringFormat(mockupData.substring(i*maxMsgBodyLen,mockupData.length()),0));
+    for(int i = 0; i*maxMsgBodyLen <= serialData.length(); i++ ){
+        if((i+1)*maxMsgBodyLen > serialData.length())
+            uBit.radio.datagram.send(toUwuStringFormat(serialData.substring(i*maxMsgBodyLen,serialData.length()),0));
         else
-            uBit.radio.datagram.send(toUwuStringFormat(mockupData.substring(i*maxMsgBodyLen,(i+1)*maxMsgBodyLen),1));
+            uBit.radio.datagram.send(toUwuStringFormat(serialData.substring(i*maxMsgBodyLen,(i+1)*maxMsgBodyLen),1));
         uBit.sleep(2000);
     }
 }
@@ -74,9 +72,10 @@ void onSerial(MicroBitEvent e)
 int main()
 {
     //setup RF and serial
-    //setup RF and serial
     uBit.init();
     uBit.messageBus.listen(MICROBIT_ID_SERIAL, MICROBIT_SERIAL_EVT_DELIM_MATCH, onSerial);
+    //Set serial read buffer
+    serial.setRxBufferSize(254);
     serial.eventOn("$");
     serial.read(0);
 

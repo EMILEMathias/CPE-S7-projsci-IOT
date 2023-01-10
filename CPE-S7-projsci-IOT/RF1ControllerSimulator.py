@@ -1,20 +1,14 @@
 from tkinter import *
 
 import serial
+import time
 
 # Graphic interface for the send program
 master = Tk()
-scales=list()
-Nscales=60
-
-for i in range(Nscales):
-    w=Scale(master, from_=9, to=0) # creates widget
-    w.grid(row=i//10,column=i-(i//10)*10)
-    scales.append(w) # stores widget in scales list
 
 # send serial message 
 # Don't forget to establish the right serial port ******** ATTENTION
-SERIALPORT = "/dev/ttyACM0"
+SERIALPORT = "/dev/ttyACM1"
 BAUDRATE = 115200
 ser = serial.Serial()
 
@@ -52,19 +46,16 @@ def sendUARTMessage(msg):
     print("Message <" + msg + "> sent to micro-controller." )
 
 
-def read_scales():
-    b['state'] = 'disabled'
-    for i in range(Nscales):
-        column = i-(i//10)*10
-        row = i//10
-        if (scales[i].get()>0) :
-                print("Fire x=%d, y=%d has value %d" %( row, column, scales[i].get()) )
-        sendUARTMessage("(%d,%d,%d)" %(row, column, scales[i].get()))
-    sendUARTMessage("$")
-    
-    b['state'] = 'normal'
+def send_scales():
+        mockUpData = "(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)(45.43204,40.12304,0)"
+        mockUpDataSPlit = [mockUpData[i:i+253] for i in range(0, len(mockUpData), 253)]
+        for splitData in mockUpDataSPlit:
+                sendUARTMessage(splitData)
+                sendUARTMessage("$")
+                time.sleep(5)
 
-b=Button(master,text="Send Values",highlightcolor="blue",command=read_scales, state="disabled") # button to read values
+        
+b=Button(master,text="Send Values",highlightcolor="blue",command=send_scales, state="disabled") # button to read values
 serialButton=Button(master,text="Open Serial",highlightcolor="blue",command=initUART) # button to read values
 b.grid(row=6,column=7,columnspan = 3)
 serialButton.grid(row=6, column=0, columnspan = 3)
