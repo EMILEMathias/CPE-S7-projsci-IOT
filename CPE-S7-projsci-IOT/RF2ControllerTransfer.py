@@ -39,7 +39,6 @@ def initUART():
     ser.parity = serial.PARITY_NONE #set parity check: no parity
     ser.stopbits = serial.STOPBITS_ONE #number of stop bits
     ser.timeout = None          #block read
-
     # ser.timeout = 0             #non-block read
     # ser.timeout = 2              #timeout block read
     ser.xonxoff = False     #disable software flow control
