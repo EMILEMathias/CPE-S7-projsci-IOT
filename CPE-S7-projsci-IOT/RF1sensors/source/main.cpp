@@ -6,36 +6,28 @@ MicroBit uBit;
 MicroBitSerial serial(USBTX, USBRX); 
 int uwuID = 125;
 int maxMsgBodyLen = 242;
-int key[5][5] = {
-    {1,2,0,0,0},
-    {0,1,2,1,0},
-    {0,0,1,2,2},
-    {3,0,1,1,0},
-    {0,3,0,0,1}
+int key[2][2] = {
+    {1,2},
+    {3,1}
 };
 
 //transform key into matrix
-ManagedString encrypt(ManagedString text, int key[][5])
+ManagedString encrypt(ManagedString text, int key[][2])
 {
     ManagedString c("");
     int k = 0;
-    int input[5];
+    int input[2];
     while (k < text.length())
     {
         input[0] = text.charAt(k);
         k++;
         input[1] = text.charAt(k);
         k++;
-        input[2] = text.charAt(k);
-        k++;
-        input[3] = text.charAt(k);
-        k++;
-        input[4] = text.charAt(k);
-        k++;
-        for (int i = 0; i < 5; i++)
+
+        for (int i = 0; i < 2; i++)
         {
             int cipher = 0;
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 2; j++) {
                 cipher += key[i][j] * input[j];
             }
             c = ManagedString(c+(char)((cipher % 256)));
@@ -67,18 +59,16 @@ void onSerial(MicroBitEvent e)
     uBit.display.scroll("A1",75);
     // ManagedString serialData = serial.readUntil('$');
     ManagedString serialData = serial.read(20);
-    ManagedString mockupData = ManagedString("(0,0,2)(1,0,0)(2,0,0)(3,0,0)(4,0,0)(5,0,0)(6,0,0)(7,0,0)(8,0,0)(9,0,0)(0,1,0)(1,1,0)(2,1,0)(3,1,5)(4,1,0)(5,1,0)(6,1,0)(7,1,0)(8,1,0)(9,1,0)(0,2,0)(1,2,0)(2,2,0)(3,2,0)(4,2,3)(5,2,0)(6,2,0)(7,2,0)(8,2,0)(9,2,0)(0,3,0)(1,3,0)(2,3,0)(3,3,0)(4,3,0)(5,3,3)(6,3,0)(7,3,0)(8,3,0)(9,3,0)(0,4,0)(1,4,0)(2,4,4)(3,4,0)(4,4,0)(5,4,0)(6,4,0)(7,4,0)(8,4,0)(9,4,0)(0,5,0)(1,5,0)(2,5,0)(3,5,0)(4,5,0)(5,5,4)(6,5,0)(7,5,0)(8,5,0)(9,5,0)");
+    ManagedString mockupData = ManagedString("(0,0,2)(1,0,0)(2,0,0)(3,0,0)(4,0,0)(5,0,0)(6,0,0)(7,0,0)(8,0,0)(9,0,0)(0,1,0)(1,1,0)(2,1,0)(3,1,5)(4,1,0)(5,1,0)(6,1,0)(7,1,0)(8,1,0)(9,1,0)(0,2,0)(1,2,0)(2,2,0)(3,2,0)(4,2,3)(5,2,0)(6,2,0)(7,2,0)(8,2,0)(9,2,0)(0,3,0)(1,3,0)(2,3,0)(3,3,0)(4,3,0)(5,3,3)(6,3,0)(7,3,0)(8,3,0)(9,3,0)(0,4,0)(1,4,0)");
     
     // boucle à travers les données
     for(int i = 0; i*maxMsgBodyLen <= mockupData.length(); i++ ){
-        if((i+1)*maxMsgBodyLen > mockupData.length()){
+        if((i+1)*maxMsgBodyLen > mockupData.length())
             uBit.radio.datagram.send(toUwuStringFormat(mockupData.substring(i*maxMsgBodyLen,mockupData.length()),0));
-        }
-        else{
+        else
             uBit.radio.datagram.send(toUwuStringFormat(mockupData.substring(i*maxMsgBodyLen,(i+1)*maxMsgBodyLen),1));
-        }
+        uBit.sleep(2000);
     }
-    uBit.sleep(1000);
 }
 
 int main()
