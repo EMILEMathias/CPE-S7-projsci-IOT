@@ -62,7 +62,7 @@ if __name__ == '__main__':
             if (ser.inWaiting() > 0): # if incoming bytes are waiting
                 # wait for a $ in serial bus 
                 dataStr = str(ser.read_until(b'\x24'))
-                clearedStr = dataStr.replace("uwu",'').replace("b",'').replace("'",'').replace("$",'').replace("\\xf8\\x18\\x07",'').replace("\\xf9\\x15\\xf8","").replace('\\xe7Kw',"")
+                clearedStr = dataStr.replace("uwu",'').replace("b",'').replace("'",'').replace("$",'').replace("\\xf8\\x18\\x07",'').replace("\\xf9\\x15\\xf8","").replace('\\xe7Kw',"").replace('\\xf7\\x1\\x16',"").replace("\\xc6\\xae\\xf5","").replace("\\x92J\\x01","")
                 os.system('clear')
                 print("Serial Port : "+ ser.port + "\nReceived data :\n" + dataStr + "\nCleared data :\n"+clearedStr)
     except (KeyboardInterrupt, SystemExit):
