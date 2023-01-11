@@ -1,9 +1,7 @@
 # Program to control passerelle between Android application
 # and micro-controller through USB tty
-import time
 import sys
 import serial
-import json
 import glob
 from datetime import datetime
 import os
@@ -57,18 +55,21 @@ def initUART():
 # Main program logic follows:
 if __name__ == '__main__':
     initUART()
-    # client = mqtt.Client("RF2Controller")
-    # client.connect("")
-    # client.publish("house/light","ON")
+    client = mqtt.Client("RF2Controller")
+    client.username_pw_set("emergency", "pimpon")
+    client.connect("localhost",1883)
+    
     print ('Press Ctrl-C to quit.')
     try:
         while ser.isOpen() :
             if (ser.inWaiting() > 0): # if incoming bytes are waiting
                 # wait for a $ in serial bus 
-                dataStr = str(ser.read_until(b'\x24'))
+                dataStr = str(ser.read_until(b'\x24')).replace("b","").replace("'","").replace("uwu","").replace("$","")
                 os.system('clear')
                 print("Serial Port : "+ ser.port + "\nReceived data :\n" + dataStr )
-                
+                client.publish("emergencyAccidents",payload=dataStr)
+                client.publish("grafanaAccidents",payload=dataStr)
+
     except (KeyboardInterrupt, SystemExit):
         ser.close()
         exit()
