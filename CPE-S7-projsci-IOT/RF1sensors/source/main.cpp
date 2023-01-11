@@ -4,7 +4,6 @@
 
 MicroBit uBit;
 MicroBitSerial serial(USBTX, USBRX); 
-int uwuID = 125;
 int maxMsgBodyLen = 244;
 int key[2][2] = {
     {1,2},
@@ -44,9 +43,7 @@ ManagedString toUwuStringFormat( ManagedString strInput){
     }
     ManagedString uwuBody(strInput);
     ManagedString uwuName("uwu");
-    ManagedString uwuPID((char)uwuID);
-
-    ManagedString uwuEncryptedMsg(encrypt(uwuName+uwuBody+uwuPID, key));
+    ManagedString uwuEncryptedMsg(encrypt(uwuName+uwuBody, key));
     return ManagedString(uwuEncryptedMsg);
 }
 
