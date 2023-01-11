@@ -23,12 +23,11 @@ def findSerialPort():
         ports = ''
    for port in ports:
         try:
-            SerialPort = "/dev/ttyACM0"
+            SerialPort = "/dev/ttyACM2"
             # SerialPort = port 
         except (OSError, serial.SerialException):
             pass
    return SerialPort
-
 
 def initUART():
     # ser = serial.Serial(SERIALPORT, BAUDRATE)
