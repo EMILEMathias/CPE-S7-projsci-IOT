@@ -7,6 +7,7 @@ import json
 import glob
 from datetime import datetime
 import os
+import paho.mqtt.client as mqtt
 
 SERIALPORT = ""
 BAUDRATE = 115200
@@ -56,6 +57,9 @@ def initUART():
 # Main program logic follows:
 if __name__ == '__main__':
     initUART()
+    # client = mqtt.Client("RF2Controller")
+    # client.connect("")
+    # client.publish("house/light","ON")
     print ('Press Ctrl-C to quit.')
     try:
         while ser.isOpen() :
@@ -63,7 +67,8 @@ if __name__ == '__main__':
                 # wait for a $ in serial bus 
                 dataStr = str(ser.read_until(b'\x24'))
                 os.system('clear')
-                print("Serial Port : "+ ser.port + "\nReceived data :\n" + dataStr + "\nCleared data :\n")
+                print("Serial Port : "+ ser.port + "\nReceived data :\n" + dataStr )
+                
     except (KeyboardInterrupt, SystemExit):
         ser.close()
         exit()
