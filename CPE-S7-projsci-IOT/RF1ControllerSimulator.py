@@ -8,7 +8,7 @@ master = Tk()
 
 # send serial message 
 # Don't forget to establish the right serial port ******** ATTENTION
-SERIALPORT = "/dev/ttyACM1"
+SERIALPORT = "/dev/ttyACM0"
 BAUDRATE = 115200
 ser = serial.Serial()
 import paho.mqtt.client as mqtt
